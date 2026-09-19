@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>JEE Test Portal</title>
+<style>
+:root{--bg:#0b1020;--card:#121a2d;--muted:#93a4c7;--text:#f4f7ff;--accent:#6ea8fe;--good:#36d399;--bad:#fb7185;--line:#273554}
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,Arial;background:var(--bg);color:var(--text)}
+header{padding:18px 22px;border-bottom:1px solid var(--line);position:sticky;top:0;background:#0b1020ee;backdrop-filter:blur(8px);z-index:5}
+h1,h2,h3{margin:.2em 0}.sub{color:var(--muted)}main{max-width:1200px;margin:auto;padding:22px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;margin-bottom:16px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+label{display:block;margin:8px 0;color:#dce5fb}select,input,button{font:inherit;border-radius:10px;border:1px solid var(--line);padding:10px;background:#0e1628;color:var(--text)}
+input[type=checkbox]{accent-color:var(--accent)}button{cursor:pointer;background:#1d4ed8;border:0;font-weight:700}button.secondary{background:#26334f}button.good{background:#087f5b}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}.chapter{padding:10px;border:1px solid var(--line);border-radius:10px;background:#0e1628}.chapter b{display:block}.pill{display:inline-block;padding:4px 8px;border-radius:999px;background:#26334f;color:#dce5fb;font-size:12px}
+#testView,#resultView{display:none}.timer{font-size:22px;font-weight:800}.question{font-size:20px;line-height:1.5;margin:18px 0}.option{display:block;width:100%;text-align:left;margin:9px 0;background:#0e1628}.option.selected{outline:2px solid var(--accent)}.palette{display:grid;grid-template-columns:repeat(10,1fr);gap:6px}.palette button{padding:8px;background:#26334f}.palette button.answered{background:#087f5b}.palette button.review{background:#a16207}.palette button.current{outline:2px solid white}.stat{padding:14px;border:1px solid var(--line);border-radius:12px}.ok{color:var(--good)}.bad{color:var(--bad)}
+small{color:var(--muted)}.subjectbox{margin-bottom:16px}.selectrow{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+@media(max-width:600px){main{padding:12px}.palette{grid-template-columns:repeat(6,1fr)}.question{font-size:18px}}
+</style>
+</head>
+<body>
+<header><h1>JEE Test Portal</h1><div class="sub">Original practice bank • 54 chapters • 1,620 questions</div></header>
+
+<main>
+<section id="setupView">
+<div class="card">
+<h2>Build Your Test</h2>
+<div class="grid">
+<label>Questions
+<select id="count"><option>10</option><option>20</option><option selected>30</option><option>45</option><option>60</option><option>90</option><option>120</option></select></label>
+<label>Question type
+<select id="type"><option value="all">MCQ + Numerical</option><option value="mcq">MCQ</option><option value="numerical">Numerical</option></select></label>
+<label>Difficulty
+<select id="difficulty"><option value="all">All</option><option>easy</option><option>medium</option><option>hard</option></select></label>
+<label>Duration
+<select id="duration"><option>30</option><option selected>60</option><option>90</option><option>120</option><option>180</option></select></label>
+</div>
+<p><small>Scoring: +4 correct, −1 wrong, 0 unanswered. This starter bank currently contains original MCQ practice prompts; numerical mode is reserved for future expansion.</small></p>
+</div>
+<div id="chapters"></div>
+<div class="row">
+<button onclick="selectAll(true)">Select all</button>
+<button class="secondary" onclick="selectAll(false)">Clear all</button>
+<button onclick="startTest()">Generate Test</button>
+</div>
+</section>
+
+<section id="testView">
+<div class="card">
+<div class="row" style="justify-content:space-between"><div><b id="testMeta"></b><div class="sub" id="progress"></div></div><div class="timer" id="timer"></div></div>
+</div>
+<div class="card">
+<div class="pill" id="qtag"></div><div class="question" id="question"></div><div id="options"></div>
+<div class="row">
+<button class="secondary" onclick="prevQ()">Previous</button>
+<button onclick="toggleReview()">Mark / Unmark Review</button>
+<button onclick="nextQ()">Next</button>
+<button class="good" onclick="submitTest()">Submit Test</button>
+</div>
+</div>
+<div class="card"><h3>Question Palette</h3><div class="palette" id="palette"></div></div>
+</section>
+
+<section id="resultView">
+<div class="card"><h2>Test Result</h2><div id="summary" class="grid"></div></div>
+<div class="card"><h3>Subject-wise Result</h3><div id="subjects"></div></div>
+<div class="card"><h3>Answer Review</h3><div id="review"></div></div>
+<button onclick="location.reload()">Create Another Test</button>
+</section>
+</main>
+
+<script src="questions.js"></script>
+<script>
+const subjects=["Physics","Chemistry","Mathematics"];
+let selected=[], answers={}, reviews=new Set(), current=0, seconds=0, timerId=null, testId="";
+const chapterMap={};
+for(const q of questionBank){(chapterMap[q.subject]??=new Set()).add(q.chapter)}
+function renderChapters(){
+ const box=document.getElementById("chapters"); box.innerHTML="";
+ for(const s of subjects){
+  const wrap=document.createElement("div"); wrap.className="card subjectbox";
+  const names=[...chapterMap[s]];
+  wrap.innerHTML=`<div class="selectrow"><h3>${s}</h3><span class="pill">${names.length} chapters</span></div>`;
+  const grid=document.createElement("div");grid.className="grid";
+  names.forEach(ch=>{
+   const n=questionBank.filter(q=>q.subject===s&&q.chapter===ch).length;
+   const lab=document.createElement("label");lab.className="chapter";
+   lab.innerHTML=`<input type="checkbox" data-chapter="${encodeURIComponent(ch)}"> <b>${ch}</b><small>${n} questions</small>`;
+   grid.appendChild(lab);
+  });
+  wrap.appendChild(grid);box.appendChild(wrap);
+ }
+}
+function selectAll(v){document.querySelectorAll('[data-chapter]').forEach(x=>x.checked=v)}
+function getSelected(){
+ return [...document.querySelectorAll('[data-chapter]:checked')].map(x=>decodeURIComponent(x.dataset.chapter))
+}
+function shuffle(a){a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function startTest(){
+ const ch=getSelected(); if(!ch.length){alert("Select at least one chapter.");return}
+ const typ=document.getElementById("type").value, diff=document.getElementById("difficulty").value;
+ let pool=questionBank.filter(q=>ch.includes(q.chapter)&&(typ==="all"||q.type===typ)&&(diff==="all"||q.difficulty===diff));
+ const count=+document.getElementById("count").value;
+ if(pool.length<count){alert(`Only ${pool.length} matching questions are available. Reduce the question count or select more chapters.`);return}
+ selected=shuffle(pool).slice(0,count);answers={};reviews=new Set();current=0;
+ testId=Math.floor(100000+Math.random()*900000).toString();
+ seconds=+document.getElementById("duration").value*60;
+ document.getElementById("setupView").style.display="none";document.getElementById("testView").style.display="block";
+ document.getElementById("testMeta").textContent=`Test ID: ${testId} • SET ${"ABCD"[Math.floor(Math.random()*4)]}`;
+ timerId=setInterval(()=>{seconds--;renderTimer();if(seconds<=0){clearInterval(timerId);submitTest(true)}},1000);
+ render();
+}
+function renderTimer(){const m=Math.floor(seconds/60),s=seconds%60;document.getElementById("timer").textContent=`${m}:${String(s).padStart(2,"0")}`}
+function render(){
+ const q=selected[current];document.getElementById("progress").textContent=`Question ${current+1} of ${selected.length}`;
+ document.getElementById("qtag").textContent=`${q.subject} • ${q.chapter} • ${q.difficulty.toUpperCase()}`;
+ document.getElementById("question").textContent=q.question;
+ const o=document.getElementById("options");o.innerHTML="";
+ q.options.forEach((x,i)=>{const b=document.createElement("button");b.className="option"+(answers[current]===i?" selected":"");b.textContent=`${String.fromCharCode(65+i)}. ${x}`;b.onclick=()=>{answers[current]=i;render()};o.appendChild(b)});
+ document.getElementById("palette").innerHTML=selected.map((_,i)=>`<button class="${i===current?"current ":""}${answers[i]!==undefined?"answered ":""}${reviews.has(i)?"review":""}" onclick="current=${i};render()">${i+1}</button>`).join("");
+ renderTimer();
+}
+function prevQ(){if(current>0){current--;render()}}
+function nextQ(){if(current<selected.length-1){current++;render()}}
+function toggleReview(){reviews.has(current)?reviews.delete(current):reviews.add(current);render()}
+function submitTest(auto=false){
+ if(!auto&&!confirm("Submit the test now?"))return;
+ clearInterval(timerId);document.getElementById("testView").style.display="none";document.getElementById("resultView").style.display="block";
+ let correct=0,wrong=0,unanswered=0;const by={};
+ selected.forEach((q,i)=>{
+  by[q.subject]??={correct:0,wrong:0,unanswered:0};
+  if(answers[i]===undefined){unanswered++;by[q.subject].unanswered++}
+  else if(q.type==="mcq"&&answers[i]===q.answer){correct++;by[q.subject].correct++}
+  else{wrong++;by[q.subject].wrong++}
+ });
+ const score=correct*4-wrong;
+ const acc=selected.length?((correct/selected.length)*100).toFixed(1):"0";
+ document.getElementById("summary").innerHTML=[
+  ["Score",`${score}`],["Correct",correct],["Wrong",wrong],["Unanswered",unanswered],["Accuracy",`${acc}%`]
+ ].map(x=>`<div class="stat"><small>${x[0]}</small><h2>${x[1]}</h2></div>`).join("");
+ document.getElementById("subjects").innerHTML=Object.entries(by).map(([s,v])=>{
+  const sc=v.correct*4-v.wrong;
+  const ac=((v.correct/(v.correct+v.wrong+v.unanswered))*100).toFixed(1);
+  return `<div class="card"><b>${s}</b> — ${sc} marks • ${v.correct} correct • ${v.wrong} wrong • ${v.unanswered} unanswered • ${ac}% accuracy</div>`
+ }).join("");
+ document.getElementById("review").innerHTML=selected.map((q,i)=>{
+  const ua=answers[i]===undefined;
+  const text=ua?"Unanswered":(answers[i]===q.answer?"Correct":"Wrong");
+  const cls=ua?"":answers[i]===q.answer?"ok":"bad";
+  return `<div class="card"><b>Q${i+1}. ${q.question}</b><p class="${cls}">${text}</p><small>Correct answer: ${q.options[q.answer]}</small><p>${q.explanation}</p></div>`;
+ }).join("");
+}
+renderChapters();
+</script>
+</body>
+</html>
