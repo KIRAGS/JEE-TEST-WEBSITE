@@ -1,23 +1,22 @@
-JEE TEST WEBSITE
-=================
+JEE TEST PORTAL — FINAL DEMO
 
-Files:
-- index.html
-- questions.js
+Features:
+- 54 chapters, 1,000 practice questions per chapter (54,000 total entries)
+- MCQ + numerical questions
+- Easy / medium / hard tagging
+- Sub-chapter tagging and question-pattern IDs
+- Teacher question selection with full question text, options, answer and explanation
+- Teacher-created tests with the same selected questions for all students
+- Student accounts: teacher creates Student ID + password
+- Student dashboard, test history and leaderboard
+- Teacher dashboard with students, tests and attempt counts
+- Browser-local demo storage using localStorage
 
-How to run:
-1. Keep both files in the same folder.
-2. Double-click index.html.
-3. Select chapters.
-4. Choose question count, difficulty and duration.
-5. Click Generate Test.
+Demo teacher login:
+ID: admin
+Password: admin123
 
-Question bank:
-54 official-syllabus chapter names
-Physics: 20 chapters x 30 = 600
-Chemistry: 20 chapters x 30 = 600
-Mathematics: 14 chapters x 30 = 420
-Total = 1,620 original practice entries.
+IMPORTANT:
+This is a static/demo deployment. Accounts, tests and results are stored in the browser's localStorage, so they are NOT shared across different phones/computers. For a real college-wide deployment, connect the same UI to a real authentication/database backend such as Firebase or Supabase and move credentials/results to the server.
 
-Important:
-The current 1,620-entry bank is an original starter/practice bank generated from chapter concepts. It is NOT a replacement for a professionally curated JEE Main question bank or previous-year paper. The engine is ready for upgrading the entries into deeper JEE-style MCQ and numerical questions.
+The question bank is original practice content and is not a reproduction of official JEE papers. It should be teacher-reviewed before being used for formal examinations.

@@ -1,157 +1,70 @@
-<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>JEE Test Portal</title>
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>JEE Test Portal</title>
 <style>
-:root{--bg:#0b1020;--card:#121a2d;--muted:#93a4c7;--text:#f4f7ff;--accent:#6ea8fe;--good:#36d399;--bad:#fb7185;--line:#273554}
-*{box-sizing:border-box}body{margin:0;font-family:system-ui,Arial;background:var(--bg);color:var(--text)}
-header{padding:18px 22px;border-bottom:1px solid var(--line);position:sticky;top:0;background:#0b1020ee;backdrop-filter:blur(8px);z-index:5}
-h1,h2,h3{margin:.2em 0}.sub{color:var(--muted)}main{max-width:1200px;margin:auto;padding:22px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;margin-bottom:16px}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
-label{display:block;margin:8px 0;color:#dce5fb}select,input,button{font:inherit;border-radius:10px;border:1px solid var(--line);padding:10px;background:#0e1628;color:var(--text)}
-input[type=checkbox]{accent-color:var(--accent)}button{cursor:pointer;background:#1d4ed8;border:0;font-weight:700}button.secondary{background:#26334f}button.good{background:#087f5b}
-.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}.chapter{padding:10px;border:1px solid var(--line);border-radius:10px;background:#0e1628}.chapter b{display:block}.pill{display:inline-block;padding:4px 8px;border-radius:999px;background:#26334f;color:#dce5fb;font-size:12px}
-#testView,#resultView{display:none}.timer{font-size:22px;font-weight:800}.question{font-size:20px;line-height:1.5;margin:18px 0}.option{display:block;width:100%;text-align:left;margin:9px 0;background:#0e1628}.option.selected{outline:2px solid var(--accent)}.palette{display:grid;grid-template-columns:repeat(10,1fr);gap:6px}.palette button{padding:8px;background:#26334f}.palette button.answered{background:#087f5b}.palette button.review{background:#a16207}.palette button.current{outline:2px solid white}.stat{padding:14px;border:1px solid var(--line);border-radius:12px}.ok{color:var(--good)}.bad{color:var(--bad)}
-small{color:var(--muted)}.subjectbox{margin-bottom:16px}.selectrow{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
-@media(max-width:600px){main{padding:12px}.palette{grid-template-columns:repeat(6,1fr)}.question{font-size:18px}}
-</style>
-</head>
-<body>
-<header><h1>JEE Test Portal</h1><div class="sub">Original practice bank • 54 chapters • 1,620 questions</div></header>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#f7f9fc;color:#172033}header{background:#fff;border-bottom:1px solid #e5e7eb;padding:16px 20px;position:sticky;top:0;z-index:5}.wrap{max-width:1180px;margin:auto}.brand{display:flex;justify-content:space-between;align-items:center}main{max-width:1180px;margin:auto;padding:22px 16px}.card{background:#fff;border:1px solid #e5e7eb;border-radius:15px;padding:18px;margin-bottom:16px;box-shadow:0 2px 10px #00000008}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.two{display:grid;grid-template-columns:1fr 1fr;gap:14px}button{padding:10px 14px;border-radius:9px;border:1px solid #dbe1ea;background:#fff;font-weight:700;cursor:pointer}.primary{background:#2563eb;color:#fff;border-color:#2563eb}.tab.active{background:#111827;color:#fff}.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}input,select{width:100%;padding:10px;border:1px solid #cbd5e1;border-radius:8px;margin:5px 0 12px}.muted{color:#64748b}.stat{font-size:28px;font-weight:800}.hidden{display:none!important}.row{display:flex;justify-content:space-between;gap:10px;align-items:center;border:1px solid #e5e7eb;border-radius:10px;padding:11px;margin:7px 0}.pill{font-size:12px;padding:4px 8px;border-radius:99px;background:#eff6ff;color:#1d4ed8}.q{font-size:19px;line-height:1.55;white-space:pre-wrap;overflow-wrap:anywhere}.option{display:block;width:100%;text-align:left;margin:8px 0}.option.sel{background:#eff6ff;border-color:#2563eb}.palette{display:flex;flex-wrap:wrap;gap:6px}.question-list{max-height:72vh;overflow:auto;padding:4px}.question-card{display:block;border:1px solid #dbe1ea;border-radius:12px;padding:15px;margin:10px 0;background:#fff}.question-card:hover{border-color:#94a3b8}.question-head{display:flex;align-items:flex-start;gap:10px}.question-head input{width:auto;margin:3px 0 0;flex:0 0 auto}.question-number{font-weight:800;color:#334155;white-space:nowrap}.question-text{font-size:16px;line-height:1.65;white-space:pre-wrap;overflow-wrap:anywhere;margin:8px 0 10px}.question-options{margin:8px 0 4px;padding-left:28px}.question-options li{padding:4px 0;line-height:1.5;overflow-wrap:anywhere}.qmeta{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}.qtag{font-size:11px;padding:4px 8px;border-radius:99px;background:#f1f5f9;color:#475569}.answer-details{margin-top:10px}.answer-details summary{cursor:pointer;font-weight:700;color:#1d4ed8}.teacher-toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:10px 0}.teacher-toolbar input{flex:1;min-width:220px;margin:0}.countbox{font-weight:700;color:#334155}.p{width:38px;padding:9px 0}.answered{background:#dbeafe}.review{outline:2px solid #f59e0b}table{width:100%;border-collapse:collapse}th,td{padding:9px;border-bottom:1px solid #e5e7eb;text-align:left}@media(max-width:750px){.grid,.two{grid-template-columns:1fr}.brand{flex-direction:column;align-items:flex-start;gap:10px}}
 
-<main>
-<section id="setupView">
-<div class="card">
-<h2>Build Your Test</h2>
-<div class="grid">
-<label>Questions
-<select id="count"><option>10</option><option>20</option><option selected>30</option><option>45</option><option>60</option><option>90</option><option>120</option></select></label>
-<label>Question type
-<select id="type"><option value="all">MCQ + Numerical</option><option value="mcq">MCQ</option><option value="numerical">Numerical</option></select></label>
-<label>Difficulty
-<select id="difficulty"><option value="all">All</option><option>easy</option><option>medium</option><option>hard</option></select></label>
-<label>Duration
-<select id="duration"><option>30</option><option selected>60</option><option>90</option><option>120</option><option>180</option></select></label>
+.login-page{min-height:calc(100vh - 73px);background:linear-gradient(135deg,#f4f9ff 0%,#fff 45%,#eef6ff 100%);padding:44px 20px 20px}.login-shell{max-width:1250px;margin:auto;display:grid;grid-template-columns:1fr 560px 1fr;gap:34px;align-items:center}.login-hero{padding:20px 10px}.hero-badge{font-size:40px;margin-bottom:12px}.login-hero h1{font-size:42px;line-height:1.1;color:#12346b;margin:0 0 14px}.login-hero h1 span{color:#1672e8}.login-hero p{font-size:18px;line-height:1.55;color:#58729a}.book-stack{margin-top:34px;width:300px;transform:rotate(-3deg)}.book-stack div{padding:15px 24px;border-radius:10px 18px 18px 10px;color:#fff;font-weight:800;letter-spacing:1px;margin-top:7px;box-shadow:0 8px 18px #12346b22}.book-stack div:nth-child(1){background:#12346b}.book-stack div:nth-child(2){background:#1d4f91}.book-stack div:nth-child(3){background:#2a70c9}.login-card{background:#fff;border:1px solid #d8e6f7;border-radius:22px;padding:34px 40px;box-shadow:0 18px 50px #164a8a18}.login-brand{display:flex;align-items:center;gap:14px;margin-bottom:25px}.brand-icon{font-size:36px}.login-brand h2{margin:0;color:#12346b;font-size:28px}.login-brand p{margin:4px 0 0;color:#6680a5}.login-card label{display:block;font-weight:700;color:#173768;margin:13px 0 7px}.login-card input,.login-card select{padding:13px 14px;border-radius:10px;border:1px solid #c7d7eb;background:#fbfdff;font-size:15px}.login-card input:focus,.login-card select:focus{outline:2px solid #b9d7ff;border-color:#3b82f6}.login-btn{width:100%;padding:14px 18px;font-size:16px;border-radius:10px;margin-top:13px;display:flex;justify-content:center;gap:12px}.login-help{text-align:center;color:#6b7f9d;font-size:12px;margin:17px 0 6px}.demo-note{text-align:center;background:#f1f7ff;border-radius:9px;padding:9px;color:#55708f;font-size:12px}.remember{display:flex!important;align-items:center;gap:7px;font-weight:500!important;color:#60758f!important;font-size:13px!important}.remember input{width:auto!important;margin:0!important}.login-features{display:flex;flex-direction:column;gap:25px}.feature{display:flex;flex-direction:column;gap:7px}.feature b{font-size:17px;color:#12346b}.feature span{font-size:14px;color:#617b9d;line-height:1.5}.login-footer{text-align:center;color:#6b82a2;font-size:12px;margin-top:34px}@media(max-width:1050px){.login-shell{grid-template-columns:1fr 560px}.login-hero{display:none}.login-features{display:none}}@media(max-width:620px){.login-page{padding:20px 12px}.login-card{padding:25px 20px}.login-shell{display:block}.login-brand h2{font-size:24px}}
+</style></head><body><header><div class="wrap brand"><div><b style="font-size:21px;color:#12346b">🎓 JEE Test Portal</b><div class="muted" style="font-size:13px">Learn • Practice • Excel</div></div><div id="logout"></div></div></header><main>
+<section id="login" class="login-page">
+<div class="login-shell">
+  <div class="login-hero">
+    <div class="hero-badge">🎓</div>
+    <h1>Your JEE Journey<br><span>Starts Here</span></h1>
+    <p>Practice smarter. Perform better.<br>Prepare with confidence.</p>
+    <div class="book-stack"><div>PHYSICS</div><div>CHEMISTRY</div><div>MATHEMATICS</div></div>
+  </div>
+  <div class="login-card">
+    <div class="login-brand"><div class="brand-icon">🎓</div><div><h2>JEE Test Portal</h2><p>Login to Continue</p></div></div>
+    <label>Role</label>
+    <select id="role"><option value="student">Student</option><option value="teacher">Teacher / Admin</option></select>
+    <label>Student ID / Roll Number</label>
+    <input id="uid" placeholder="Enter your Student ID / Roll Number" autocomplete="username">
+    <div id="nameWrap" class="hidden"><label>Name</label><input id="name" placeholder="Teacher name"></div>
+    <label>Password</label>
+    <input id="pw" type="password" placeholder="Enter your password" autocomplete="current-password">
+    <label class="remember"><input type="checkbox" id="remember"> <span>Remember me</span></label>
+    <button class="primary login-btn" onclick="login()">Login <span>→</span></button>
+    <p class="login-help">Students must use an account created by their teacher/admin.</p>
+    <div class="demo-note">Demo teacher: <b>admin</b> / <b>admin123</b></div>
+  </div>
+  <div class="login-features">
+    <div class="feature"><b>🎯 54,000+ Practice Questions</b><span>Varied original practice questions across 54 chapters.</span></div>
+    <div class="feature"><b>📈 Track Your Progress</b><span>View scores, accuracy, history and chapter performance.</span></div>
+    <div class="feature"><b>📚 Teacher-Controlled Tests</b><span>Chapter-wise, topic-wise and full-syllabus tests.</span></div>
+    <div class="feature"><b>🏆 Leaderboards</b><span>Compare test performance with your classmates.</span></div>
+  </div>
 </div>
-<p><small>Scoring: +4 correct, −1 wrong, 0 unanswered. This starter bank currently contains original MCQ practice prompts; numerical mode is reserved for future expansion.</small></p>
-</div>
-<div id="chapters"></div>
-<div class="row">
-<button onclick="selectAll(true)">Select all</button>
-<button class="secondary" onclick="selectAll(false)">Clear all</button>
-<button onclick="startTest()">Generate Test</button>
-</div>
+<div class="login-footer">JEE Test Portal v1.0 &nbsp;•&nbsp; For Educational Use Only</div>
 </section>
-
-<section id="testView">
-<div class="card">
-<div class="row" style="justify-content:space-between"><div><b id="testMeta"></b><div class="sub" id="progress"></div></div><div class="timer" id="timer"></div></div>
-</div>
-<div class="card">
-<div class="pill" id="qtag"></div><div class="question" id="question"></div><div id="options"></div>
-<div class="row">
-<button class="secondary" onclick="prevQ()">Previous</button>
-<button onclick="toggleReview()">Mark / Unmark Review</button>
-<button onclick="nextQ()">Next</button>
-<button class="good" onclick="submitTest()">Submit Test</button>
-</div>
-</div>
-<div class="card"><h3>Question Palette</h3><div class="palette" id="palette"></div></div>
-</section>
-
-<section id="resultView">
-<div class="card"><h2>Test Result</h2><div id="summary" class="grid"></div></div>
-<div class="card"><h3>Subject-wise Result</h3><div id="subjects"></div></div>
-<div class="card"><h3>Answer Review</h3><div id="review"></div></div>
-<button onclick="location.reload()">Create Another Test</button>
-</section>
+<section id="app" class="hidden"></section><section id="test" class="hidden"></section><section id="result" class="hidden"></section>
 </main>
-
-<script src="questions.js"></script>
+<script src="curriculum.js"></script><script src="questions-01.js"></script><script src="questions-02.js"></script><script src="questions-03.js"></script><script src="questions-04.js"></script><script src="questions-05.js"></script><script src="questions-06.js"></script><script src="questions-07.js"></script><script src="questions-08.js"></script>
 <script>
-const subjects=["Physics","Chemistry","Mathematics"];
-let selected=[], answers={}, reviews=new Set(), current=0, seconds=0, timerId=null, testId="";
-const chapterMap={};
-for(const q of questionBank){(chapterMap[q.subject]??=new Set()).add(q.chapter)}
-function renderChapters(){
- const box=document.getElementById("chapters"); box.innerHTML="";
- for(const s of subjects){
-  const wrap=document.createElement("div"); wrap.className="card subjectbox";
-  const names=[...chapterMap[s]];
-  wrap.innerHTML=`<div class="selectrow"><h3>${s}</h3><span class="pill">${names.length} chapters</span></div>`;
-  const grid=document.createElement("div");grid.className="grid";
-  names.forEach(ch=>{
-   const n=questionBank.filter(q=>q.subject===s&&q.chapter===ch).length;
-   const lab=document.createElement("label");lab.className="chapter";
-   lab.innerHTML=`<input type="checkbox" data-chapter="${encodeURIComponent(ch)}"> <b>${ch}</b><small>${n} questions</small>`;
-   grid.appendChild(lab);
-  });
-  wrap.appendChild(grid);box.appendChild(wrap);
- }
-}
-function selectAll(v){document.querySelectorAll('[data-chapter]').forEach(x=>x.checked=v)}
-function getSelected(){
- return [...document.querySelectorAll('[data-chapter]:checked')].map(x=>decodeURIComponent(x.dataset.chapter))
-}
-function shuffle(a){a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
-function startTest(){
- const ch=getSelected(); if(!ch.length){alert("Select at least one chapter.");return}
- const typ=document.getElementById("type").value, diff=document.getElementById("difficulty").value;
- let pool=questionBank.filter(q=>ch.includes(q.chapter)&&(typ==="all"||q.type===typ)&&(diff==="all"||q.difficulty===diff));
- const count=+document.getElementById("count").value;
- if(pool.length<count){alert(`Only ${pool.length} matching questions are available. Reduce the question count or select more chapters.`);return}
- selected=shuffle(pool).slice(0,count);answers={};reviews=new Set();current=0;
- testId=Math.floor(100000+Math.random()*900000).toString();
- seconds=+document.getElementById("duration").value*60;
- document.getElementById("setupView").style.display="none";document.getElementById("testView").style.display="block";
- document.getElementById("testMeta").textContent=`Test ID: ${testId} • SET ${"ABCD"[Math.floor(Math.random()*4)]}`;
- timerId=setInterval(()=>{seconds--;renderTimer();if(seconds<=0){clearInterval(timerId);submitTest(true)}},1000);
- render();
-}
-function renderTimer(){const m=Math.floor(seconds/60),s=seconds%60;document.getElementById("timer").textContent=`${m}:${String(s).padStart(2,"0")}`}
-function render(){
- const q=selected[current];document.getElementById("progress").textContent=`Question ${current+1} of ${selected.length}`;
- document.getElementById("qtag").textContent=`${q.subject} • ${q.chapter} • ${q.difficulty.toUpperCase()}`;
- document.getElementById("question").textContent=q.question;
- const o=document.getElementById("options");o.innerHTML="";
- q.options.forEach((x,i)=>{const b=document.createElement("button");b.className="option"+(answers[current]===i?" selected":"");b.textContent=`${String.fromCharCode(65+i)}. ${x}`;b.onclick=()=>{answers[current]=i;render()};o.appendChild(b)});
- document.getElementById("palette").innerHTML=selected.map((_,i)=>`<button class="${i===current?"current ":""}${answers[i]!==undefined?"answered ":""}${reviews.has(i)?"review":""}" onclick="current=${i};render()">${i+1}</button>`).join("");
- renderTimer();
-}
-function prevQ(){if(current>0){current--;render()}}
-function nextQ(){if(current<selected.length-1){current++;render()}}
-function toggleReview(){reviews.has(current)?reviews.delete(current):reviews.add(current);render()}
-function submitTest(auto=false){
- if(!auto&&!confirm("Submit the test now?"))return;
- clearInterval(timerId);document.getElementById("testView").style.display="none";document.getElementById("resultView").style.display="block";
- let correct=0,wrong=0,unanswered=0;const by={};
- selected.forEach((q,i)=>{
-  by[q.subject]??={correct:0,wrong:0,unanswered:0};
-  if(answers[i]===undefined){unanswered++;by[q.subject].unanswered++}
-  else if(q.type==="mcq"&&answers[i]===q.answer){correct++;by[q.subject].correct++}
-  else{wrong++;by[q.subject].wrong++}
- });
- const score=correct*4-wrong;
- const acc=selected.length?((correct/selected.length)*100).toFixed(1):"0";
- document.getElementById("summary").innerHTML=[
-  ["Score",`${score}`],["Correct",correct],["Wrong",wrong],["Unanswered",unanswered],["Accuracy",`${acc}%`]
- ].map(x=>`<div class="stat"><small>${x[0]}</small><h2>${x[1]}</h2></div>`).join("");
- document.getElementById("subjects").innerHTML=Object.entries(by).map(([s,v])=>{
-  const sc=v.correct*4-v.wrong;
-  const ac=((v.correct/(v.correct+v.wrong+v.unanswered))*100).toFixed(1);
-  return `<div class="card"><b>${s}</b> — ${sc} marks • ${v.correct} correct • ${v.wrong} wrong • ${v.unanswered} unanswered • ${ac}% accuracy</div>`
- }).join("");
- document.getElementById("review").innerHTML=selected.map((q,i)=>{
-  const ua=answers[i]===undefined;
-  const text=ua?"Unanswered":(answers[i]===q.answer?"Correct":"Wrong");
-  const cls=ua?"":answers[i]===q.answer?"ok":"bad";
-  return `<div class="card"><b>Q${i+1}. ${q.question}</b><p class="${cls}">${text}</p><small>Correct answer: ${q.options[q.answer]}</small><p>${q.explanation}</p></div>`;
- }).join("");
-}
-renderChapters();
-</script>
-</body>
-</html>
+const K='JEE_PORTAL_FINAL',D=JSON.parse(localStorage.getItem(K)||'{"students":[],"tests":[],"attempts":[]}');let me=null,test=null,run=null,idx=0,timer=null;
+const save=()=>localStorage.setItem(K,JSON.stringify(D)),E=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function show(id){['login','app','test','result'].forEach(x=>document.getElementById(x).classList.toggle('hidden',x!==id))}
+function syncRole(){let teacher=document.getElementById('role').value==='teacher';document.getElementById('nameWrap').classList.toggle('hidden',!teacher);document.querySelector('#uid').previousElementSibling.textContent=teacher?'Login ID':'Student ID / Roll Number'}
+document.getElementById('role').addEventListener('change',syncRole);syncRole();
+function login(){let role=document.getElementById('role').value,n=document.getElementById('name').value.trim(),id=document.getElementById('uid').value.trim(),pw=document.getElementById('pw').value;if(!id)return alert('Enter your Login ID');if(role==='teacher'){if(id!=='admin'||pw!=='admin123')return alert('Invalid teacher credentials. Demo: admin / admin123');me={role,user:{id,name:n||'Administrator'}}}else{let u=D.students.find(x=>x.id.toLowerCase()===id.toLowerCase());if(!u)return alert('Student account not found. Ask your teacher/admin to create your account.');if(u.password && pw!==u.password)return alert('Incorrect password.');me={role,user:u}}save();render();document.getElementById('logout').innerHTML='<button onclick="logout()">Logout</button>'}
+function logout(){clearInterval(timer);me=null;show('login');document.getElementById('logout').innerHTML=''}
+function render(){show('app');me.role==='teacher'?teacher():student()}
+function nav(items){return '<div class="tabs">'+items.map(x=>`<button onclick="${x[1]}">${x[0]}</button>`).join('')+'</div>'}
+function student(){let a=D.attempts.filter(x=>x.studentId===me.user.id);document.getElementById('app').innerHTML=nav([['Dashboard','student()'],['History','studentHistory()'],['Leaderboard','leaderboard()']])+`<div class="grid"><div class="card"><div class="stat">${D.tests.filter(x=>x.active).length}</div><div class="muted">Available tests</div></div><div class="card"><div class="stat">${a.length}</div><div class="muted">Your attempts</div></div><div class="card"><div class="stat">54,000</div><div class="muted">Practice questions</div></div></div><div class="card"><h2>Available Tests</h2>${D.tests.filter(x=>x.active).map(t=>`<div class="row"><span><b>${E(t.name)}</b><br><span class="muted">${t.questions.length} questions • ${t.duration} min</span></span><button class="primary" onclick="start('${t.id}')">Start</button></div>`).join('')||'<p class="muted">No tests created yet.</p>'}</div>`}
+function studentHistory(){let a=D.attempts.filter(x=>x.studentId===me.user.id).sort((a,b)=>b.time-a.time);document.getElementById('app').innerHTML=nav([['Dashboard','student()'],['History','studentHistory()'],['Leaderboard','leaderboard()']])+`<div class="card"><h2>Test History</h2><table><tr><th>Test</th><th>Attempt</th><th>Score</th><th>Accuracy</th><th>Date</th></tr>${a.map(x=>`<tr><td>${E(x.testName)}</td><td>#${x.number}</td><td>${x.score}</td><td>${x.accuracy}%</td><td>${new Date(x.time).toLocaleString()}</td></tr>`).join('')}</table></div>`}
+function leaderboard(){let a=[...D.attempts].sort((x,y)=>y.score-x.score||y.accuracy-x.accuracy);document.getElementById('app').innerHTML=nav([['Dashboard','student()'],['History','studentHistory()'],['Leaderboard','leaderboard()']])+`<div class="card"><h2>Leaderboard</h2><table><tr><th>#</th><th>Student</th><th>Test</th><th>Score</th><th>Accuracy</th></tr>${a.map((x,i)=>`<tr><td>${i+1}</td><td>${E(x.studentName)}</td><td>${E(x.testName)}</td><td>${x.score}</td><td>${x.accuracy}%</td></tr>`).join('')}</table></div>`}
+function teacher(){document.getElementById('app').innerHTML=nav([['Dashboard','teacher()'],['Create Test','create()'],['Tests','tests()'],['Students & Attempts','students()'],['Leaderboard','leaderboard()']])+`<div class="grid"><div class="card"><div class="stat">${D.students.length}</div><div class="muted">Students</div></div><div class="card"><div class="stat">${D.tests.length}</div><div class="muted">Tests</div></div><div class="card"><div class="stat">${D.attempts.length}</div><div class="muted">Total attempts</div></div></div><div class="card"><h2>Question Bank</h2><p><b>54,000</b> original practice questions across <b>54 chapters</b>, with Subject → Chapter → Sub-chapter tagging.</p></div>`}
+function create(){let ss=Object.keys(CURRICULUM);document.getElementById('app').innerHTML=nav([['Dashboard','teacher()'],['Create Test','create()'],['Tests','tests()'],['Students & Attempts','students()'],['Leaderboard','leaderboard()']])+`<div class="card"><h2>Create Test</h2><p class="muted">Teacher chooses the exact question IDs. Every student gets the same selected set.</p><label>Test name</label><input id="tn" placeholder="e.g. Coordinate Geometry — Circle"><label>Duration (minutes)</label><input id="td" type="number" value="60"><div class="two"><div><label>Subject</label><select id="ts" onchange="loadCh()">${ss.map(x=>`<option>${x}</option>`).join('')}</select></div><div><label>Chapter</label><select id="tc" onchange="loadSub()"></select></div></div><label>Sub-chapter</label><select id="tSub" onchange="pick()"></select><div id="pick"></div><button class="primary" onclick="makeTest()">Create Test</button></div>`;loadCh()}
+function loadCh(){let s=ts.value;tc.innerHTML=Object.keys(CURRICULUM[s]).map(x=>`<option>${x}</option>`).join('');loadSub()}
+function loadSub(){let s=ts.value,c=tc.value;tSub.innerHTML=CURRICULUM[s][c].map(x=>`<option>${x}</option>`).join('');pick()}
+function pick(){let q=QUESTION_BANK.filter(x=>x.subject===ts.value&&x.chapter===tc.value&&x.subChapter===tSub.value);document.getElementById('pick').innerHTML=`<div class="teacher-toolbar"><span class="countbox">${q.length} questions available</span><button onclick="document.querySelectorAll('.qc').forEach(x=>x.checked=true)">Select all</button><button onclick="document.querySelectorAll('.qc').forEach(x=>x.checked=false)">Clear all</button><input id="qsearch" placeholder="Search full question text..." oninput="filterTeacherQuestions()"></div><div class="muted" style="font-size:13px;margin-bottom:8px">Questions are shown in full. Open “Answer & explanation” when you need to verify a question before adding it to the test.</div><div id="teacherQuestionList" class="question-list">${q.map((x,i)=>`<div class="question-card" data-search="${E((x.question+' '+(x.options||[]).join(' ')).toLowerCase())}"><div class="question-head"><input class="qc" type="checkbox" value="${x.id}"><div style="flex:1"><div><span class="question-number">Q${i+1}</span> <span class="muted">${E(x.id)}</span></div><div class="question-text">${E(x.question)}</div>${x.type==='mcq'?`<ol class="question-options" type="A">${x.options.map(o=>`<li>${E(o)}</li>`).join('')}</ol>`:`<div class="muted"><b>Numerical answer type</b> — students enter a number.</div>`}<div class="qmeta"><span class="qtag">${E(x.subject)}</span><span class="qtag">${E(x.chapter)}</span><span class="qtag">${E(x.subChapter)}</span><span class="qtag">${E(x.type)}</span><span class="qtag">${E(x.difficulty)}</span><span class="qtag">Pattern ${E(x.patternId||'')}</span></div><details class="answer-details"><summary>Answer & explanation</summary><div style="margin-top:8px;line-height:1.6"><b>Answer:</b> ${x.type==='mcq'?E(String.fromCharCode(65+x.answer)+'. '+x.options[x.answer]):E(String(x.numericAnswer))}<br><b>Explanation:</b> ${E(x.explanation||'No explanation provided.')}</div></details></div></div></div>`).join('')}</div>`}
+
+function filterTeacherQuestions(){let term=(document.getElementById('qsearch')?.value||'').trim().toLowerCase();document.querySelectorAll('#teacherQuestionList .question-card').forEach(c=>{c.style.display=!term||c.dataset.search.includes(term)?'block':'none'})}
+function makeTest(){let name=tn.value.trim(),dur=+td.value,ids=[...document.querySelectorAll('.qc:checked')].map(x=>x.value);if(!name||!dur||!ids.length)return alert('Enter name, duration and select questions.');D.tests.push({id:'T'+Date.now(),name,duration:dur,questions:ids,active:true});save();alert('Test created. Same questions will be used for every student.');tests()}
+function tests(){document.getElementById('app').innerHTML=nav([['Dashboard','teacher()'],['Create Test','create()'],['Tests','tests()'],['Students & Attempts','students()'],['Leaderboard','leaderboard()']])+`<div class="card"><h2>Tests</h2>${D.tests.map(t=>`<div class="row"><span><b>${E(t.name)}</b><br><span class="muted">${t.questions.length} questions • ${t.duration} min • ${D.attempts.filter(a=>a.testId===t.id).length} attempts</span></span><button onclick="t.active=!t.active;save();tests()">${t.active?'Disable':'Enable'}</button></div>`).join('')||'<p class="muted">No tests.</p>'}</div>`}
+function students(){document.getElementById('app').innerHTML=nav([['Dashboard','teacher()'],['Create Test','create()'],['Tests','tests()'],['Students & Accounts','students()'],['Leaderboard','leaderboard()']])+`<div class="card"><h2>Student Accounts</h2><div class="two"><div><label>Student name</label><input id="sn" placeholder="e.g. Rahul Kumar"></div><div><label>Student ID / Roll No.</label><input id="sid" placeholder="24JEE015"></div></div><div class="two"><div><label>Password</label><input id="spw" placeholder="Set a password"></div><div style="display:flex;align-items:end"><button class="primary" onclick="addStudent()">Create Student Account</button></div></div><p class="muted">Give each student their Student ID and password. Students can then log in from the login screen.</p></div><div class="card"><h2>Students & Attempts</h2><table><tr><th>Student</th><th>Login ID</th><th>Attempts</th><th>Best Score</th><th>Last Attempt</th></tr>${D.students.map(u=>{let a=D.attempts.filter(x=>x.studentId===u.id);return `<tr><td>${E(u.name)}</td><td>${E(u.id)}</td><td>${a.length}</td><td>${a.length?Math.max(...a.map(x=>x.score)):0}</td><td>${a.length?new Date(Math.max(...a.map(x=>x.time))).toLocaleString():'—'}</td></tr>`}).join('')||'<tr><td colspan="5">No student accounts yet.</td></tr>'}</table></div>`}
+function start(id){test=D.tests.find(x=>x.id===id);run={answers:{},review:{},qs:test.questions.map(id=>QUESTION_BANK.find(x=>x.id===id))};idx=0;show('test');draw();let end=Date.now()+test.duration*60000;timer=setInterval(()=>{let left=Math.max(0,Math.ceil((end-Date.now())/1000));document.getElementById('tm').textContent=Math.floor(left/60)+':'+String(left%60).padStart(2,'0');if(left===0)submit()},500)}
+function draw(){let q=run.qs[idx],a=run.answers[q.id];document.getElementById('test').innerHTML=`<div class="two"><div class="card"><span class="pill">${E(q.subject)} • ${E(q.chapter)} • ${E(q.subChapter)}</span><b id="tm" style="float:right"></b><p class="muted">Question ${idx+1}/${run.qs.length} • ${q.difficulty}</p><div class="q">${E(q.question)}</div>${q.type==='mcq'?q.options.map((o,i)=>`<button class="option ${a===i?'sel':''}" onclick="run.answers['${q.id}']=${i};draw()">${String.fromCharCode(65+i)}. ${E(o)}</button>`).join(''):`<input id="na" type="number" step="any" value="${a??''}" placeholder="Numerical answer">`}<div style="margin-top:15px;display:flex;gap:8px"><button onclick="prev()">Previous</button><button onclick="run.review['${q.id}']=!run.review['${q.id}'];draw()">Mark Review</button><button class="primary" onclick="next()">${idx===run.qs.length-1?'Submit':'Next'}</button></div></div><div class="card"><h3>Palette</h3><div class="palette">${run.qs.map((x,i)=>`<button class="p ${run.answers[x.id]!==undefined?'answered':''} ${run.review[x.id]?'review':''}" onclick="idx=${i};draw()">${i+1}</button>`).join('')}</div><hr><p>${Object.keys(run.answers).length} answered</p><button class="primary" onclick="submit()">Submit Test</button></div></div>`}
+function capture(){let e=document.getElementById('na');if(e&&e.value!=='')run.answers[run.qs[idx].id]=Number(e.value)}
+function next(){capture();idx<run.qs.length-1?(idx++,draw()):submit()}function prev(){capture();if(idx>0){idx--;draw()}}
+function addStudent(){let name=sn.value.trim(),id=sid.value.trim(),pw=spw.value;if(!name||!id||!pw)return alert('Enter student name, ID and password.');if(D.students.some(x=>x.id.toLowerCase()===id.toLowerCase()))return alert('That Student ID already exists.');D.students.push({id,name,password:pw});save();alert('Student account created. Share the ID and password with the student.');students()}
+function submit(){if(!run)return;capture();clearInterval(timer);let correct=0,wrong=0,un=0,score=0;run.qs.forEach(q=>{let a=run.answers[q.id];if(a===undefined){un++;return}let ok=q.type==='mcq'?a===q.answer:Math.abs(Number(a)-q.numericAnswer)<=q.tolerance;if(ok){correct++;score+=4}else{wrong++;score-=1}});let total=run.qs.length,acc=total?Math.round(correct/total*1000)/10:0,n=D.attempts.filter(a=>a.studentId===me.user.id&&a.testId===test.id).length+1;D.attempts.push({studentId:me.user.id,studentName:me.user.name,testId:test.id,testName:test.name,number:n,score,correct,wrong,unanswered:un,accuracy:acc,time:Date.now()});save();run=null;test=null;show('result');document.getElementById('result').innerHTML=`<div class="card" style="max-width:700px;margin:auto"><h2>Test Submitted</h2><div class="grid"><div><div class="stat">${score}</div><div class="muted">Score</div></div><div><div class="stat">${acc}%</div><div class="muted">Accuracy</div></div><div><div class="stat">#${n}</div><div class="muted">Attempt</div></div></div><p>Correct: ${correct} • Wrong: ${wrong} • Unanswered: ${un}</p><button class="primary" onclick="render()">Back to Dashboard</button></div>`}
+</script></body></html>
